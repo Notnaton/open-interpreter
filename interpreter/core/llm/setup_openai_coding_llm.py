@@ -36,7 +36,9 @@ def setup_openai_coding_llm(interpreter):
 
     def coding_llm(messages):
         # Convert messages
-        messages = convert_to_openai_messages(messages, function_calling=True)
+        messages = convert_to_openai_messages(
+            messages, function_calling=True, vision=interpreter.vision
+        )
 
         # Add OpenAI's recommended function message
         messages[0][
@@ -123,9 +125,6 @@ def setup_openai_coding_llm(interpreter):
         code = ""
 
         for chunk in response:
-            if interpreter.debug_mode:
-                print("Chunk from LLM", chunk)
-
             if "choices" not in chunk or len(chunk["choices"]) == 0:
                 # This happens sometimes
                 continue
@@ -134,9 +133,6 @@ def setup_openai_coding_llm(interpreter):
 
             # Accumulate deltas
             accumulated_deltas = merge_deltas(accumulated_deltas, delta)
-
-            if interpreter.debug_mode:
-                print("Accumulated deltas", accumulated_deltas)
 
             if "content" in delta and delta["content"]:
                 yield {"type": "message", "content": delta["content"]}

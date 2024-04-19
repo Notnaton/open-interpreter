@@ -6,6 +6,7 @@ from ...terminal_interface.utils.display_markdown_message import (
 )
 from .run_function_calling_llm import run_function_calling_llm
 from .run_text_llm import run_text_llm
+from .run_structured_output_llm import run_structured_output_llm
 from .utils.convert_to_openai_messages import convert_to_openai_messages
 
 litellm.suppress_debug_info = True
@@ -29,6 +30,7 @@ class Llm:
         self.temperature = 0
         self.supports_vision = False
         self.supports_functions = None  # Will try to auto-detect
+        self.structured_output = False
 
         # Optional settings
         self.context_window = None
@@ -202,6 +204,8 @@ Continuing...
 
         if supports_functions:
             yield from run_function_calling_llm(self, params)
+        elif self.structured_output:
+            yield from run_structured_output_llm(self, params)
         else:
             yield from run_text_llm(self, params)
 

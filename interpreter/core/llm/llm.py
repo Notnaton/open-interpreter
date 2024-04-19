@@ -30,7 +30,7 @@ class Llm:
         self.temperature = 0
         self.supports_vision = False
         self.supports_functions = None  # Will try to auto-detect
-        self.structured_output = False
+        self.structured_output = True
 
         # Optional settings
         self.context_window = None
@@ -61,7 +61,7 @@ class Llm:
             ), "No message after the first can have the role 'system'"
 
         # Detect function support
-        if self.supports_functions != None:
+        if self.supports_functions is not None:
             supports_functions = self.supports_functions
         else:
             # Guess whether or not it's a function calling LLM
@@ -94,6 +94,11 @@ class Llm:
                         if self.interpreter.verbose:
                             print("Removing image message!")
                 # Idea: we could set detail: low for the middle messages, instead of deleting them
+
+        if self.structured_output:
+            structured_output = True
+        else:
+            structured_output = False
 
         # Convert to OpenAI messages format
         messages = convert_to_openai_messages(
@@ -204,7 +209,7 @@ Continuing...
 
         if supports_functions:
             yield from run_function_calling_llm(self, params)
-        elif self.structured_output:
+        elif structured_output:
             yield from run_structured_output_llm(self, params)
         else:
             yield from run_text_llm(self, params)

@@ -4,6 +4,7 @@ import platform
 import subprocess
 import time
 import inquirer
+import requests
 
 from interpreter import interpreter
 
@@ -222,6 +223,13 @@ elif selected_model == "Ollama":
             # Set the model to the selected model
             interpreter.llm.model = f"ollama/{selected_name}"
             interpreter.display_message(f"\nUsing Ollama model: `{selected_name}` \n")
+
+            interpreter.display_message(f"\nFinding context length for {selected_name}...\n")
+            data = {
+                "name": f"{selected_name}"
+            }
+            context_length = requests.post(url=f"http://localhost:11434/api/show", json=data).json()
+            print(context_length)
             time.sleep(1)
         
     # If Ollama is not installed or not recognized as a command, prompt the user to download Ollama and try again

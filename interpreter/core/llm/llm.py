@@ -4,6 +4,7 @@ import tokentrim as tt
 from ...terminal_interface.utils.display_markdown_message import (
     display_markdown_message,
 )
+from .run_structured_output_llm import run_structured_output_llm
 from .run_function_calling_llm import run_function_calling_llm
 from .run_text_llm import run_text_llm
 from .utils.convert_to_openai_messages import convert_to_openai_messages
@@ -29,6 +30,7 @@ class Llm:
         self.temperature = 0
         self.supports_vision = False
         self.supports_functions = None  # Will try to auto-detect
+        self.structured_output = True
 
         # Optional settings
         self.context_window = None
@@ -92,6 +94,9 @@ class Llm:
                         if self.interpreter.verbose:
                             print("Removing image message!")
                 # Idea: we could set detail: low for the middle messages, instead of deleting them
+        
+        if self.structured_output:
+            structured_output = True
 
         # Convert to OpenAI messages format
         messages = convert_to_openai_messages(
@@ -202,6 +207,8 @@ Continuing...
 
         if supports_functions:
             yield from run_function_calling_llm(self, params)
+        elif structured_output:
+            yield from run_structured_output_llm(self, params)
         else:
             yield from run_text_llm(self, params)
 

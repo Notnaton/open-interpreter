@@ -6,11 +6,16 @@ def main(page: ft.Page):
         controls=[
             ft.Container(height=12),
             ft.NavigationDrawerDestination(
-                label="Item 1",
-                icon=ft.icons.DOOR_BACK_DOOR_OUTLINED,
-                selected_icon_content=ft.Icon(ft.icons.DOOR_BACK_DOOR),
+                label="Open-Interpreter",
+                icon=ft.icons.CIRCLE_OUTLINED,
+                selected_icon_content=ft.Icon(ft.icons.CIRCLE),
             ),
             ft.Divider(thickness=2),
+            ft.ListView(
+                controls=[
+                    ft.TextButton(text="chat title"),
+                ],
+            ),
             ft.NavigationDrawerDestination(
                 icon_content=ft.Icon(ft.icons.MAIL_OUTLINED),
                 label="Item 2",

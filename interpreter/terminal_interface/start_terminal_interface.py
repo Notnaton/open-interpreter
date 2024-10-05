@@ -21,6 +21,19 @@ def start_terminal_interface(interpreter):
     Meant to be used from the command line. Parses arguments, starts OI's terminal interface.
     """
 
+    class CustomHelpParser(argparse.ArgumentParser):
+        def print_help(self, *args, **kwargs):
+            super().print_help(*args, **kwargs)
+            special_help_message = '''
+Open Interpreter, 2024
+
+Use """ to write multi-line messages.
+            '''
+            print(special_help_message)
+
+    # Create parser instance early
+    parser = CustomHelpParser(description="Open Interpreter", usage="%(prog)s [options]")
+    
     # Instead use an async interpreter, which has a server. Set settings on that
     if "--server" in sys.argv:
         from interpreter import AsyncInterpreter
@@ -334,20 +347,6 @@ def start_terminal_interface(interpreter):
             sys.argv.remove(old_flag)
             sys.argv.append(new_flag)
 
-    class CustomHelpParser(argparse.ArgumentParser):
-        def print_help(self, *args, **kwargs):
-            super().print_help(*args, **kwargs)
-            special_help_message = '''
-Open Interpreter, 2024
-
-Use """ to write multi-line messages.
-            '''
-            print(special_help_message)
-
-    parser = CustomHelpParser(
-        description="Open Interpreter", usage="%(prog)s [options]"
-    )
-
     # Add arguments
     for arg in arguments:
         default = arg.get("default")
@@ -384,6 +383,11 @@ Use """ to write multi-line messages.
             )
 
     args, unknown_args = parser.parse_known_args()
+
+    # If --help is present, return early
+    if '--help' in sys.argv or '-h' in sys.argv:
+        parser.print_help()
+        return
 
     # handle unknown arguments
     if unknown_args:

@@ -98,6 +98,34 @@ print(interpreter.messages)
 
 (Coming soon)
 
+## GUI
+
+Open Interpreter now includes a graphical user interface! To use it:
+
+```bash
+# Quick start with the launcher script
+python scripts/gui.py
+
+# Or make it executable
+chmod +x scripts/gui.py
+./scripts/gui.py
+
+# Or use Python's module syntax
+python -m interpreter.gui.flet_app
+
+# After installation with pip
+oi-gui
+```
+
+The GUI provides a modern chat interface for interacting with Open Interpreter, with features like:
+- Real-time response streaming
+- Dark/light mode toggle
+- Settings configuration (model, provider, API key, etc.)
+- Code execution within the chat interface
+- Markdown rendering with syntax highlighting
+
+For more details, see the [GUI documentation](interpreter/gui/README.md).
+
 ## License
 
 [AGPL-3.0](LICENSE)

@@ -61,6 +61,9 @@ class Profile:
 
         # Server settings
         self.serve = False  # Whether to start the server
+        
+        # GUI settings
+        self.gui = False  # Whether to use the GUI interface
 
         # Allowed paths and commands
         self.allowed_paths = []  # List of allowed paths

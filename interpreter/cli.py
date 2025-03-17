@@ -54,6 +54,12 @@ def _profile_to_arg_params(profile: Profile) -> Dict[str, Dict[str, Any]]:
             "default": profile.serve,
             "help": "Start the server",
         },
+        "gui": {
+            "flags": ["--gui", "-g"],
+            "action": "store_true",
+            "default": False,
+            "help": "Launch the GUI interface",
+        },
         "model": {
             "flags": ["--model", "-m"],
             "default": profile.model,
@@ -192,6 +198,20 @@ async def async_main(args):
         global_interpreter.server()
         return
 
+    if args["gui"]:
+        try:
+            import kivy
+            from .gui import launch_gui
+            
+            print("Starting GUI interface...")
+            global_interpreter = await async_load_interpreter(args)
+            launch_gui(global_interpreter)
+            return
+        except ImportError:
+            print("Error: Kivy is required for the GUI interface.")
+            print("Please install it with: uv add kivy")
+            sys.exit(1)
+
     if (
         args["input"] is None
         and sys.stdin.isatty()
@@ -302,6 +322,20 @@ def main():
             global_interpreter = load_interpreter(args)
             global_interpreter.server()
             return
+
+        if args["gui"]:
+            try:
+                import kivy
+                from .gui import launch_gui
+                
+                print("Starting GUI interface...")
+                global_interpreter = load_interpreter(args)
+                launch_gui(global_interpreter)
+                return
+            except ImportError:
+                print("Error: Kivy is required for the GUI interface.")
+                print("Please install it with: uv add kivy")
+                sys.exit(1)
 
         asyncio.run(async_main(args))
     except KeyboardInterrupt:

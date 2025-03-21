@@ -46,7 +46,7 @@ from .tools import BashTool, ComputerTool, EditTool, ToolCollection, ToolResult
 from .ui.markdown import MarkdownRenderer
 from .ui.tool import ToolRenderer
 
-COMPUTER_USE_BETA_FLAG = "computer-use-2024-10-22"
+COMPUTER_USE_BETA_FLAG = "computer-use-2025-01-24"
 PROMPT_CACHING_BETA_FLAG = "prompt-caching-2024-07-31"
 
 # Initialize markdown renderer
@@ -252,6 +252,8 @@ class Interpreter:
         if provider is None and self.model in [
             "claude-3-5-sonnet-latest",
             "claude-3-5-sonnet-20241022",
+            "claude-3-7-sonnet-20250219",
+            "claude-3-7-sonnet-latest",
         ]:
             # For some reason, Litellm can't find the model info for these
             provider = "anthropic"

@@ -1,6 +1,6 @@
 [project]
 name = "open-interpreter"
-version = "1.0.0"  # Use "-rc1", "-rc2", etc. for pre-release versions
+version = "0.5.0"  # Use "-rc1", "-rc2", etc. for pre-release versions
 description = "A natural language interface for computers"
 authors = [
     {name = "Killian Lucas", email = "killian@openinterpreter.com"},

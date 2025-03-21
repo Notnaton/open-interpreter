@@ -48,6 +48,7 @@ from .ui.tool import ToolRenderer
 
 COMPUTER_USE_BETA_FLAG = "computer-use-2025-01-24"
 PROMPT_CACHING_BETA_FLAG = "prompt-caching-2024-07-31"
+EXTENDED_OUTPUT_BETA_FLAG = "output-128k-2025-02-19"
 
 # Initialize markdown renderer
 md = MarkdownRenderer()
@@ -262,6 +263,7 @@ class Interpreter:
         if provider is None or max_tokens is None:
             try:
                 model_info = litellm.get_model_info(self.model)
+                print(model_info)
                 if provider is None:
                     provider = model_info["litellm_provider"]
                 if max_tokens is None:
@@ -323,7 +325,7 @@ class Interpreter:
 
                 # Use Anthropic API which supports betas
                 raw_response = self._client.beta.messages.create(
-                    max_tokens=max_tokens,
+                    max_tokens=max_tokens if EXTENDED_OUTPUT_BETA_FLAG in betas else 64000,
                     messages=self.messages,
                     model=model,
                     system=system["text"],

@@ -2,7 +2,7 @@ import asyncio
 import os
 from typing import ClassVar, Literal
 
-from anthropic.types.beta import BetaToolBash20241022Param
+from anthropic.types.beta import BetaToolBash20250124Param
 
 from .base import BaseAnthropicTool, CLIResult, ToolError, ToolResult
 
@@ -13,7 +13,7 @@ class BashTool(BaseAnthropicTool):
     """A tool that executes bash commands and returns their output."""
 
     name: ClassVar[Literal["bash"]] = "bash"
-    api_type: ClassVar[Literal["bash_20241022"]] = "bash_20241022"
+    api_type: ClassVar[Literal["bash_20250124"]] = "bash_20250124"
 
     async def __call__(
         self, command: str | None = None, restart: bool = False, **kwargs
@@ -65,7 +65,7 @@ class BashTool(BaseAnthropicTool):
             print(msg)
             return ToolResult(error=msg)
 
-    def to_params(self) -> BetaToolBash20241022Param:
+    def to_params(self) -> BetaToolBash20250124Param:
         return {
             "type": self.api_type,
             "name": self.name,

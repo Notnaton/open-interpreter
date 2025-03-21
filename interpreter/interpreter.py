@@ -725,7 +725,7 @@ Notes for using the `str_replace` command:
                                 "display_number": t["display_number"],
                             }
                     params["extra_headers"] = {
-                        "anthropic-beta": "computer-use-2024-10-22"
+                        "anthropic-beta": COMPUTER_USE_BETA_FLAG
                     }
 
                 # if self.debug:
